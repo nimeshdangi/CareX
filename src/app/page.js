@@ -9,8 +9,7 @@ export default function Home() {
           {/* Left Section - Text Content */}
           <div className="w-full md:w-1/2 text-center md:text-left pr-4">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Expert Care 
-              From Care<span className="text-[#003D87]">X</span>
+              Expert Care From Care<span className="text-[#003D87]">X</span>
             </h1>
             <p className="text-lg text-gray-700 mb-6">
               Get the right specialist consultation for you or your loved ones from the comfort of your home. Whether you're seeking care for autism, therapy, 
