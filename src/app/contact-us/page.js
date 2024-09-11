@@ -23,7 +23,7 @@ const ContactUs = () => {
                     <div className="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full">
                     {/* Content */}
                     <h1 className="text-4xl font-bold mb-2">Get in Touch</h1>
-                    <p className="mb-8">Get in touch with us for your health related questions</p>
+                    <p className="mb-8">Get in touch with us for your health and conditions</p>
                     <div className="flex text-left gap-5">
                         <div className="flex-1">
                         <label htmlFor="first-name">First Name</label>
