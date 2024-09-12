@@ -41,6 +41,7 @@ const AdminPanel = () => {
     return (
         <AdminSideBar>
             <div>
+                <h1>Admin Panel</h1>
                 <div className="w-1/3 mx-auto">
                     <Pie
                         data={{
