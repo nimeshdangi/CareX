@@ -3,7 +3,7 @@ import DoctorSideBar from "../../components/doctorSideBar";
 const DoctorDashboard = () => {
     return (
         <DoctorSideBar>
-            <h1 className="text-4xl font-bold mb-4 text-center">Doctor Dashboard</h1>
+            <h1 className="text-4xl font-bold mb-4 text-center">Dashboard</h1>
             <div className="flex justify-evenly flex-wrap">
                 <div>
                     <div className="w-48 h-48 bg-blue-500 rounded-lg flex flex-col justify-center items-center">
