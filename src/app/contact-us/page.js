@@ -1,4 +1,4 @@
-import SideBar from "@/components/sidebar"
+import SideBar from "../../components/sidebar"
 import Image from "next/image"
 
 const ContactUs = () => {
