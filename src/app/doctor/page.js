@@ -8,7 +8,7 @@ const DoctorDashboard = () => {
                 <div>
                     <div className="w-48 h-48 bg-blue-500 rounded-lg flex flex-col justify-center items-center">
                         <h1 className="text-4xl font-bold text-white">10</h1>
-                        Total Appointments
+                        Total Appointment
                     </div>
                 </div>
                 <div>
