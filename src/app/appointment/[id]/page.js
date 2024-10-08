@@ -1,0 +1,23 @@
+'use client'; // Make this component client-side
+
+import { useEffect, useState } from 'react';
+import VideoChat from "../../../components/VideoChat";
+
+const AppointmentPage = ({ params }) => {
+  const { id } = params; // Get appointmentId from params
+  const [token, setToken] = useState(null);
+
+  // Access localStorage only after component has mounted (client-side)
+  useEffect(() => {
+    const userToken = localStorage.getItem('userToken');
+    setToken(userToken);  // Set token state once it's fetched
+  }, []);
+
+  if (!id || !token) {
+    return <div>Loading...</div>;
+  }
+
+  return <VideoChat appointmentId={id} token={token} />;
+};
+
+export default AppointmentPage;

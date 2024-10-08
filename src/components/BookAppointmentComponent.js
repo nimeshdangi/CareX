@@ -17,7 +17,7 @@ const BookAppointmentComponent = () => {
     useEffect(() => {
         const fetchTimeSlots = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/doctor/time_slots?doctor_id=${id}&date=${appointmentDate}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/time_slots?doctor_id=${id}&date=${appointmentDate}`);
                 const data = await response.json();
                 console.log(data);
                 setTimeSlots(data.data);
@@ -31,7 +31,7 @@ const BookAppointmentComponent = () => {
     useEffect(() => {
         const fetchDoctor = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/doctor/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/${id}`);
                 const data = await response.json();
                 console.log(data);
                 setDoctor(data.data);
@@ -53,7 +53,7 @@ const BookAppointmentComponent = () => {
         const appointmentId = timeSlots[selectedTimeIndex].id;
 
         try {
-            const response = await fetch(`http://localhost:5000/patient/book-appointment`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/book-appointment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

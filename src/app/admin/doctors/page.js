@@ -9,7 +9,7 @@ const Doctors = () => {
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                const response = await fetch('http://localhost:5000/doctor/all');
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/all`);
                 const data = await response.json();
                 setDoctors(data.data);
             } catch (error) {

@@ -8,7 +8,7 @@ const AppointmentComponent = () => {
     useEffect(() => {
         const fetchMyAppointments = async () => {
             try {
-                const response = await fetch('http://localhost:5000/patient/my-appointments', {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/my-appointments`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': localStorage.getItem('token')
