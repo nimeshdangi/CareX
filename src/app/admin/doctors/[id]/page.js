@@ -28,7 +28,7 @@ const DoctorDetails = () => {
         }
 
         fetchDoctor();
-    }, [id]);
+    }, [id, router]);
 
     const handleDoctorApproval = async (status) => {
         if(status === "Not Approved") {

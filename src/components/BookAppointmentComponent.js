@@ -26,7 +26,7 @@ const BookAppointmentComponent = () => {
             }
         };
         fetchTimeSlots();
-    }, [appointmentDate]);
+    }, [appointmentDate, id]);
 
     useEffect(() => {
         const fetchDoctor = async () => {
