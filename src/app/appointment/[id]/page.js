@@ -10,8 +10,10 @@ const AppointmentPage = ({ params }) => {
 
   // Access localStorage only after component has mounted (client-side)
   useEffect(() => {
-    const userToken = localStorage.getItem('userToken');
+    const userToken = localStorage.getItem('token');
     setToken(userToken);  // Set token state once it's fetched
+    console.log(id);
+    console.log(localStorage.getItem('token'));
   }, []);
 
   if (!id || !token) {
