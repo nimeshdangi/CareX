@@ -5,6 +5,7 @@ import VideoChat from "../../../components/VideoChat";
 
 const AppointmentPage = ({ params }) => {
   const { id } = params; // Get appointmentId from params
+  console.log(id);
   const [token, setToken] = useState(null);
 
   // Access localStorage only after component has mounted (client-side)
