@@ -6,11 +6,11 @@ import io from 'socket.io-client';
 const VideoChat = ({ appointmentId, token }) => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
+  const [isCaller, setIsCaller] = useState(false);  // Determine if this peer is the caller
   const peerConnectionRef = useRef(null);  // Store the peer connection in a ref
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
 
-  const [isCaller, setIsCaller] = useState(false);  // Determine if this peer is the caller
   const connectionStarted = useRef(false);  // Ensure the connection is started only once
 
   useEffect(() => {
@@ -19,8 +19,8 @@ const VideoChat = ({ appointmentId, token }) => {
     // Join the appointment room with token
     socket.emit('joinAppointment', { token, appointmentId });
 
-    // First peer to join becomes the caller
-    socket.on('joined', () => {
+    // The first peer to connect becomes the caller
+    socket.on('caller', () => {
       if (!connectionStarted.current) {
         setIsCaller(true);  // This peer will act as the caller
         console.log('Connected as caller');
@@ -29,10 +29,10 @@ const VideoChat = ({ appointmentId, token }) => {
       }
     });
 
-    // Second peer joining will be the answerer
-    socket.on('peerJoined', () => {
+    // The second peer to connect becomes the answerer
+    socket.on('answerer', () => {
       if (!connectionStarted.current) {
-        console.log('A peer has joined. Acting as the answerer.');
+        console.log('Connected as answerer');
         startWebRTCConnection(socket, false);  // Start WebRTC as the answerer
         connectionStarted.current = true;
       }
