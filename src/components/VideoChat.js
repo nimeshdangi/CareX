@@ -48,6 +48,18 @@ const VideoChat = ({ appointmentId, token }) => {
     };
   }, [appointmentId, token]);
 
+  useEffect(() => {
+    if (localVideoRef.current && localStream) {
+      localVideoRef.current.srcObject = localStream;
+    }
+  }, [localStream]);
+
+  useEffect(() => {
+    if (remoteVideoRef.current && remoteStream) {
+      remoteVideoRef.current.srcObject = remoteStream;
+    }
+  }, [remoteStream]);
+
   const startWebRTCConnection = (socket, isCaller) => {
     const config = {
       iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
