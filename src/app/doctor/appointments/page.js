@@ -98,9 +98,9 @@ const Appointments = () => {
     },
   ];
 
-  if(appointments.length === 0) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
+  // if(appointments.length === 0) {
+  //   return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  // }
 
   // Render the Calendar component with the proper properties
   return (
