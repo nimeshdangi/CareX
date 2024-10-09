@@ -23,7 +23,7 @@ const VideoChat = ({ appointmentId, token }) => {
     });
 
     newSocket.on('error', (data) => {
-      console.error(data.message);
+      console.error(data);
     });
 
     return () => {
