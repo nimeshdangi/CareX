@@ -1,163 +1,140 @@
 'use client';
-
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 
 const VideoChat = ({ appointmentId, token }) => {
-  const [localStream, setLocalStream] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(null);
-  const peerConnectionRef = useRef(null);  // Store the peer connection in a ref
-  const localVideoRef = useRef(null);
-  const remoteVideoRef = useRef(null);
-
-  const connectionStarted = useRef(false);  // Ensure the connection is started only once
+  const [localStream, setLocalStream] = useState();
+  const [remoteStream, setRemoteStream] = useState();
+  const myVideo = useRef();
+  const remoteVideo = useRef();
+  const iceCandidateQueue = useRef([]);
+  const peerConnectionRef = useRef(null);
+  const socketRef = useRef(null);
+  const roomId = `appointment_${appointmentId}`;
 
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);  // Connect to the signaling server
+    const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
+    socketRef.current = socket;
 
-    // Join the appointment room with token
-    socket.emit('joinAppointment', { token, appointmentId });
-
-    // First peer to connect becomes the caller
-    socket.on('caller', () => {
-      if (!connectionStarted.current) {
-        console.log('Connected as caller');
-        startWebRTCConnection(socket, true);  // Start WebRTC as the caller
-        connectionStarted.current = true;
+    // Ask user for permission to access their webcam and microphone
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((currentStream) => {
+      setLocalStream(currentStream);
+      if (myVideo.current) {
+        myVideo.current.srcObject = currentStream;
       }
+
+      const peerConnection = new RTCPeerConnection();
+      peerConnectionRef.current = peerConnection;
+
+      currentStream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, currentStream);
+      });
+
+      peerConnection.ontrack = (event) => {
+        setRemoteStream(event.streams[0]);
+        if (remoteVideo.current) {
+          remoteVideo.current.srcObject = event.streams[0];
+        }
+      };
+
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          socket.emit('iceCandidate', roomId, event.candidate);
+        }
+      };
+
+      socket.on('iceCandidate', (candidate) => {
+        if (peerConnection.remoteDescription) {
+          peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+            .catch((error) => console.error('Error adding ICE candidate:', error));
+        } else {
+          iceCandidateQueue.current.push(candidate); // Queue the ICE candidate if remote description is not set
+        }
+      });
+
+      socket.on('offer', (offer) => {
+        if (peerConnection.signalingState === 'stable') {
+          peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
+            .then(() => {
+              createAnswer(peerConnection);
+              processQueuedIceCandidates(peerConnection); // Process any queued ICE candidates
+            })
+            .catch((error) => console.error('Error setting remote description:', error));
+        }
+      });
+
+      socket.on('answer', (answer) => {
+        if (peerConnection.signalingState === 'have-local-offer') {
+          peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
+            .then(() => {
+              processQueuedIceCandidates(peerConnection); // Process any queued ICE candidates
+            })
+            .catch((error) => console.error('Error setting remote description:', error));
+        }
+      });
+
+      socket.on('user-connected', () => {
+        if (peerConnection.signalingState === 'stable') {
+          createOffer(peerConnection);
+        }
+      });
+
+      // Join the appointment room with token
+      socket.emit('joinAppointment', { token, appointmentId });
+
+      return () => {
+        // Cleanup on component unmount
+        socket.off('iceCandidate');
+        socket.off('offer');
+        socket.off('answer');
+        socket.off('user-connected');
+        if (peerConnection) {
+          peerConnection.close();
+        }
+        socket.disconnect();
+      };
+    }).catch((error) => {
+      console.error('Error accessing media devices:', error);
     });
 
-    // Second peer to connect becomes the answerer
-    socket.on('answerer', () => {
-      if (!connectionStarted.current) {
-        console.log('Connected as answerer');
-        startWebRTCConnection(socket, false);  // Start WebRTC as the answerer
-        connectionStarted.current = true;
-      }
-    });
+    const createOffer = (peerConnection) => {
+      peerConnection.createOffer()
+        .then((offer) => {
+          return peerConnection.setLocalDescription(offer);
+        })
+        .then(() => {
+          socketRef.current.emit('offer', roomId, peerConnection.localDescription);
+        })
+        .catch((error) => console.error('Error creating offer:', error));
+    };
 
-    socket.on('error', (data) => {
-      console.error(data);
-    });
+    const createAnswer = (peerConnection) => {
+      peerConnection.createAnswer()
+        .then((answer) => {
+          return peerConnection.setLocalDescription(answer);
+        })
+        .then(() => {
+          socketRef.current.emit('answer', roomId, peerConnection.localDescription);
+        })
+        .catch((error) => console.error('Error creating answer:', error));
+    };
 
-    return () => {
-      if (peerConnectionRef.current) {
-        peerConnectionRef.current.close();  // Close WebRTC connection on unmount
+    const processQueuedIceCandidates = (peerConnection) => {
+      while (iceCandidateQueue.current.length > 0) {
+        const candidate = iceCandidateQueue.current.shift();
+        peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+          .catch((error) => console.error('Error adding ICE candidate:', error));
       }
-      socket.disconnect();  // Disconnect socket on unmount
     };
   }, [appointmentId, token]);
 
-  useEffect(() => {
-    if (localVideoRef.current && localStream) {
-      localVideoRef.current.srcObject = localStream;
-    }
-  }, [localStream]);
-
-  useEffect(() => {
-    if (remoteVideoRef.current && remoteStream) {
-      remoteVideoRef.current.srcObject = remoteStream;
-    }
-  }, [remoteStream]);
-
-  const startWebRTCConnection = (socket, isCaller) => {
-    const config = {
-      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-    };
-
-    const peerConnection = new RTCPeerConnection(config);
-    peerConnectionRef.current = peerConnection;
-
-    // Handle ICE candidates
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        console.log('Sending ICE candidate:', event.candidate);
-        socket.emit('iceCandidate', event.candidate);
-      }
-    };
-
-    // Handle remote stream
-    peerConnection.ontrack = (event) => {
-      console.log('Received remote track:', event.streams[0]);
-      setRemoteStream(event.streams[0]);
-      if (remoteVideoRef.current) {
-        remoteVideoRef.current.srcObject = event.streams[0];
-      }
-    };
-
-    // Handle incoming ICE candidates
-    socket.on('iceCandidate', (candidate) => {
-      console.log('Received ICE candidate:', candidate);
-      peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch((error) => {
-        console.error('Error adding received ICE candidate:', error);
-      });
-    });
-
-    // Get local media stream and add tracks
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        setLocalStream(stream);
-        if (localVideoRef.current) {
-          localVideoRef.current.srcObject = stream;
-        }
-
-        stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
-
-        // After local tracks are added, proceed with offer/answer exchange
-        if (isCaller) {
-          // Caller creates the offer
-          peerConnection
-            .createOffer()
-            .then((offer) => {
-              console.log('Sending offer:', offer);
-              return peerConnection.setLocalDescription(offer);
-            })
-            .then(() => {
-              socket.emit('offer', peerConnection.localDescription);
-            })
-            .catch((error) => {
-              console.error('Error creating offer:', error);
-            });
-        } else {
-          // Answerer waits for the offer
-          socket.on('offer', (offer) => {
-            console.log('Received offer:', offer);
-            peerConnection
-              .setRemoteDescription(new RTCSessionDescription(offer))
-              .then(() => peerConnection.createAnswer())
-              .then((answer) => {
-                console.log('Sending answer:', answer);
-                return peerConnection.setLocalDescription(answer);
-              })
-              .then(() => {
-                socket.emit('answer', peerConnection.localDescription);
-              })
-              .catch((error) => {
-                console.error('Error handling offer/answer exchange:', error);
-              });
-          });
-        }
-      })
-      .catch((error) => {
-        console.error('Error accessing media devices:', error);
-      });
-
-    // Handle incoming answer (for the caller)
-    if (isCaller) {
-      socket.on('answer', (answer) => {
-        console.log('Received answer:', answer);
-        peerConnection.setRemoteDescription(new RTCSessionDescription(answer)).catch((error) => {
-          console.error('Error setting remote description:', error);
-        });
-      });
-    }
-  };
-
   return (
     <div>
-      <video ref={localVideoRef} autoPlay muted playsInline />
-      <video ref={remoteVideoRef} autoPlay playsInline />
+      <h2>Video Call Application</h2>
+      <div>
+        <video ref={myVideo} autoPlay playsInline muted />
+        <video ref={remoteVideo} autoPlay playsInline />
+      </div>
     </div>
   );
 };
