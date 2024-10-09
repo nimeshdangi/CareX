@@ -6,34 +6,34 @@ import io from 'socket.io-client';
 const VideoChat = ({ appointmentId, token }) => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
-  const [isCaller, setIsCaller] = useState(false);  // Determine if this peer is the caller
   const peerConnectionRef = useRef(null);  // Store the peer connection in a ref
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
 
+  const [isCaller, setIsCaller] = useState(false);  // Determine if this peer is the caller
   const connectionStarted = useRef(false);  // Ensure the connection is started only once
 
   useEffect(() => {
-    // Set up socket connection
-    const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
+    const socket = io(process.env.NEXT_PUBLIC_SERVER_URL);  // Connect to the signaling server
 
     // Join the appointment room with token
     socket.emit('joinAppointment', { token, appointmentId });
 
+    // First peer to join becomes the caller
     socket.on('joined', () => {
       if (!connectionStarted.current) {
-        console.log('Connected to the appointment room');
-        setIsCaller(true);  // Mark this peer as the caller
-        startWebRTCConnection(socket, true);  // Start WebRTC connection as caller
+        setIsCaller(true);  // This peer will act as the caller
+        console.log('Connected as caller');
+        startWebRTCConnection(socket, true);  // Start WebRTC as the caller
         connectionStarted.current = true;
       }
     });
 
+    // Second peer joining will be the answerer
     socket.on('peerJoined', () => {
-      console.log('A peer has joined the room');
       if (!connectionStarted.current) {
-        console.log('This peer will act as the answerer');
-        startWebRTCConnection(socket, false);  // Start WebRTC connection as answerer
+        console.log('A peer has joined. Acting as the answerer.');
+        startWebRTCConnection(socket, false);  // Start WebRTC as the answerer
         connectionStarted.current = true;
       }
     });
@@ -44,7 +44,7 @@ const VideoChat = ({ appointmentId, token }) => {
 
     return () => {
       if (peerConnectionRef.current) {
-        peerConnectionRef.current.close(); // Close WebRTC connection on unmount
+        peerConnectionRef.current.close();  // Close WebRTC connection on unmount
       }
       socket.disconnect();  // Disconnect socket on unmount
     };
@@ -58,13 +58,13 @@ const VideoChat = ({ appointmentId, token }) => {
     };
 
     const peerConnection = new RTCPeerConnection(config);
-    peerConnectionRef.current = peerConnection;
+    peerConnectionRef.current = peerConnection;  // Save peerConnection to ref
 
     // Get local media stream
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
       setLocalStream(stream);
       if (localVideoRef.current) {
-        localVideoRef.current.srcObject = stream;
+        localVideoRef.current.srcObject = stream;  // Display local video
       }
 
       stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
@@ -78,30 +78,30 @@ const VideoChat = ({ appointmentId, token }) => {
         console.log('Sending offer:', offer);
         return peerConnection.setLocalDescription(offer);
       }).then(() => {
-        socket.emit('offer', peerConnection.localDescription);
+        socket.emit('offer', peerConnection.localDescription);  // Send the offer to the other peer
       }).catch((error) => {
         console.error('Error creating offer:', error);
       });
     }
 
-    // Handle incoming offer
+    // Handle incoming offer (for the answerer)
     socket.on('offer', (offer) => {
-      console.log('Received offer:', offer);
+      console.log('Received offer:', offer);  // Log the received offer
       peerConnection.setRemoteDescription(new RTCSessionDescription(offer)).then(() => {
-        return peerConnection.createAnswer();
+        return peerConnection.createAnswer();  // Create an answer in response to the offer
       }).then((answer) => {
-        console.log('Sending answer:', answer);
+        console.log('Sending answer:', answer);  // Log the answer
         return peerConnection.setLocalDescription(answer);
       }).then(() => {
-        socket.emit('answer', peerConnection.localDescription);
+        socket.emit('answer', peerConnection.localDescription);  // Send the answer back to the caller
       }).catch((error) => {
-        console.error('Error handling offer/answer:', error);
+        console.error('Error handling offer/answer exchange:', error);
       });
     });
 
-    // Handle incoming answer
+    // Handle incoming answer (for the caller)
     socket.on('answer', (answer) => {
-      console.log('Received answer:', answer);
+      console.log('Received answer:', answer);  // Log the received answer
       peerConnection.setRemoteDescription(new RTCSessionDescription(answer)).catch((error) => {
         console.error('Error setting remote description:', error);
       });
@@ -111,7 +111,7 @@ const VideoChat = ({ appointmentId, token }) => {
     peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
         console.log('Sending ICE candidate:', event.candidate);
-        socket.emit('iceCandidate', event.candidate);
+        socket.emit('iceCandidate', event.candidate);  // Send ICE candidates to the other peer
       }
     };
 
@@ -127,7 +127,7 @@ const VideoChat = ({ appointmentId, token }) => {
       console.log('Received remote track:', event.streams[0]);
       setRemoteStream(event.streams[0]);
       if (remoteVideoRef.current) {
-        remoteVideoRef.current.srcObject = event.streams[0];
+        remoteVideoRef.current.srcObject = event.streams[0];  // Display remote video
       }
     };
   };
