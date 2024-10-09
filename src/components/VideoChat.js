@@ -50,69 +50,30 @@ const VideoChat = ({ appointmentId, token }) => {
 
   const startWebRTCConnection = (socket, isCaller) => {
     const config = {
-      iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' }
-      ],
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
     };
 
     const peerConnection = new RTCPeerConnection(config);
-    peerConnectionRef.current = peerConnection;  // Save peerConnection to ref
-
-    // Get local media stream
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-      setLocalStream(stream);
-      if (localVideoRef.current) {
-        localVideoRef.current.srcObject = stream;  // Display local video
-      }
-
-      stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
-    }).catch((error) => {
-      console.error('Error accessing media devices:', error);
-    });
-
-    // If this peer is the caller, create and send an offer
-    if (isCaller) {
-      peerConnection.createOffer().then((offer) => {
-        console.log('Sending offer:', offer);
-        return peerConnection.setLocalDescription(offer);
-      }).then(() => {
-        socket.emit('offer', peerConnection.localDescription);  // Send the offer to the other peer
-      }).catch((error) => {
-        console.error('Error creating offer:', error);
-      });
-    }
-
-    // Handle incoming offer (for the answerer)
-    socket.on('offer', (offer) => {
-      console.log('Received offer:', offer);  // Log the received offer
-      peerConnection.setRemoteDescription(new RTCSessionDescription(offer)).then(() => {
-        return peerConnection.createAnswer();  // Create an answer in response to the offer
-      }).then((answer) => {
-        console.log('Sending answer:', answer);  // Log the answer
-        return peerConnection.setLocalDescription(answer);
-      }).then(() => {
-        socket.emit('answer', peerConnection.localDescription);  // Send the answer back to the caller
-      }).catch((error) => {
-        console.error('Error handling offer/answer exchange:', error);
-      });
-    });
-
-    // Handle incoming answer (for the caller)
-    socket.on('answer', (answer) => {
-      console.log('Received answer:', answer);  // Log the received answer
-      peerConnection.setRemoteDescription(new RTCSessionDescription(answer)).catch((error) => {
-        console.error('Error setting remote description:', error);
-      });
-    });
+    peerConnectionRef.current = peerConnection;
 
     // Handle ICE candidates
     peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
         console.log('Sending ICE candidate:', event.candidate);
-        socket.emit('iceCandidate', event.candidate);  // Send ICE candidates to the other peer
+        socket.emit('iceCandidate', event.candidate);
       }
     };
 
+    // Handle remote stream
+    peerConnection.ontrack = (event) => {
+      console.log('Received remote track:', event.streams[0]);
+      setRemoteStream(event.streams[0]);
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = event.streams[0];
+      }
+    };
+
+    // Handle incoming ICE candidates
     socket.on('iceCandidate', (candidate) => {
       console.log('Received ICE candidate:', candidate);
       peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch((error) => {
@@ -120,14 +81,65 @@ const VideoChat = ({ appointmentId, token }) => {
       });
     });
 
-    // Handle remote stream
-    peerConnection.ontrack = (event) => {
-      console.log('Received remote track:', event.streams[0]);
-      setRemoteStream(event.streams[0]);
-      if (remoteVideoRef.current) {
-        remoteVideoRef.current.srcObject = event.streams[0];  // Display remote video
-      }
-    };
+    // Get local media stream and add tracks
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setLocalStream(stream);
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream;
+        }
+
+        stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
+
+        // After local tracks are added, proceed with offer/answer exchange
+        if (isCaller) {
+          // Caller creates the offer
+          peerConnection
+            .createOffer()
+            .then((offer) => {
+              console.log('Sending offer:', offer);
+              return peerConnection.setLocalDescription(offer);
+            })
+            .then(() => {
+              socket.emit('offer', peerConnection.localDescription);
+            })
+            .catch((error) => {
+              console.error('Error creating offer:', error);
+            });
+        } else {
+          // Answerer waits for the offer
+          socket.on('offer', (offer) => {
+            console.log('Received offer:', offer);
+            peerConnection
+              .setRemoteDescription(new RTCSessionDescription(offer))
+              .then(() => peerConnection.createAnswer())
+              .then((answer) => {
+                console.log('Sending answer:', answer);
+                return peerConnection.setLocalDescription(answer);
+              })
+              .then(() => {
+                socket.emit('answer', peerConnection.localDescription);
+              })
+              .catch((error) => {
+                console.error('Error handling offer/answer exchange:', error);
+              });
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error accessing media devices:', error);
+      });
+
+    // Handle incoming answer (for the caller)
+    if (isCaller) {
+      socket.on('answer', (answer) => {
+        console.log('Received answer:', answer);
+        peerConnection.setRemoteDescription(new RTCSessionDescription(answer)).catch((error) => {
+          console.error('Error setting remote description:', error);
+        });
+      });
+    }
   };
 
   return (
