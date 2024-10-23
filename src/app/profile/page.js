@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import SideBar from "../../components/sidebar";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProfilePage = () => {
     const router = useRouter();
@@ -57,6 +58,9 @@ const ProfilePage = () => {
                         <p className="text-gray-600">
                             <strong>Address: </strong>{profile.address}
                         </p>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+                            <Link href={'/edit-profile'}>Edit Profile</Link>
+                        </button>
                         {/* <p className="text-gray-600">
                             <strong>Registration Number: </strong>{profile.registrationNumber}
                         </p>
