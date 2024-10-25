@@ -17,7 +17,7 @@ const AddAppointment = () => {
         console.log("End Date Time: ", date.toISOString().split("T")[0] + " " + endtime);
         // console.log(date, starttime, endtime);
         try {
-            const response = await fetch('http://localhost:5000/doctor/appointment', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/appointment`, {
                 method: "POST",
                 body: JSON.stringify({
                     start_date_time: date.toISOString().split("T")[0] + " " + starttime,

@@ -19,7 +19,7 @@ const DoctorDetails = () => {
 
         const fetchDoctor = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/doctor/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/${id}`);
                 const data = await response.json();
                 setDoctor(data.data);
             } catch (error) {
@@ -28,12 +28,12 @@ const DoctorDetails = () => {
         }
 
         fetchDoctor();
-    }, [id]);
+    }, [id, router]);
 
     const handleDoctorApproval = async (status) => {
         if(status === "Not Approved") {
             console.log("Token: ", token);
-            const response = await fetch(`http://localhost:5000/doctor/approve/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/approve/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +70,7 @@ const DoctorDetails = () => {
                         <p className="text-gray-500">Qualification: {doctor.qualification}</p>
                         Document
                         <Image
-                            src={`http://localhost:5000/uploads/doctors/documents/${doctor.documents}`}
+                            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/documents/${doctor.documents}`}
                             alt="doctor"
                             width={500}
                             height={500}

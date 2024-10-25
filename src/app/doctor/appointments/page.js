@@ -25,7 +25,7 @@ const Appointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/doctor/appointment", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/appointment`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -98,9 +98,9 @@ const Appointments = () => {
     },
   ];
 
-  if(appointments.length === 0) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
+  // if(appointments.length === 0) {
+  //   return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  // }
 
   // Render the Calendar component with the proper properties
   return (
