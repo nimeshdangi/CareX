@@ -1,4 +1,4 @@
-import AdminSideBar from "@/components/adminSideBar";
+import AdminSideBar from "../../../components/adminSideBar";
 
 const Appointments = () => {
     return (

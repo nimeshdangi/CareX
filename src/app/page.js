@@ -12,7 +12,7 @@ export default function Home() {
               Expert Care From Care<span className="text-[#003D87]">X</span>
             </h1>
             <p className="text-lg text-gray-700 mb-6">
-              Get the right specialist consultation for you or your loved ones from the comfort of your home. Whether you're seeking care for autism, therapy, 
+              Get the right specialist consultation for you or your loved ones from the comfort of your home. Whether you&apos;re seeking care for autism, therapy, 
               or sports medicine, our platform connects you to trusted professionals, ensuring expert advice and support at your convenience.
             </p>
             <button className="bg-[#003D87] text-white py-2 pl-6 pr-4 rounded-md hover:bg-blue-700 transition duration-300">
