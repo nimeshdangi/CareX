@@ -38,7 +38,7 @@ const SideBar = ({children}) => {
                 if (response.status === 401) {
                     localStorage.removeItem("token");
                     console.log(pathname);
-                    if (pathname == "/profile" || pathname == "/appointment") {   
+                    if (pathname == "/profile" || pathname == "/appointment" || pathname == "/edit-profile") {   
                         router.push("/");   
                     }
                 }
