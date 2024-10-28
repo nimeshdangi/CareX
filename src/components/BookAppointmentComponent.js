@@ -91,7 +91,7 @@ const BookAppointmentComponent = () => {
                 <h1 className="text-3xl font-bold text-center">Book Appointment</h1>
                 <div className="flex justify-center w-4/5 mx-auto my-4 bg-gray-50 shadow-lg rounded-lg h-64">
                     <Image 
-                        src="/doctor1.jpeg"
+                        src={doctor.image !== null ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${doctor.image}` : "/doctor1.jpeg"}
                         alt="doctor"
                         width={500}
                         height={500}
@@ -99,7 +99,7 @@ const BookAppointmentComponent = () => {
                     />
                     <div className="w-2/3 p-4">
                         <h3 className="text-xl font-bold">Dr. {doctor.name}</h3>
-                        <p className="text-gray-500">Specialty: {doctor.specialization}</p>
+                        <p className="text-gray-500">Specialty: {doctor.specification}</p>
                         <p className="text-gray-500">Qualification: {doctor.qualification}</p>
                         <p className="text-gray-500">Rating: 4.5</p>
                         <p className="text-gray-500">Experience: 10 years</p>
