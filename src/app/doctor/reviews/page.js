@@ -24,7 +24,7 @@ const ReviewPage = () => {
                     router.push('/login');
                 }
                 setReviews(data.data);
-                setAverageRating(parseFloat(data.averageRating.averageRating));
+                setAverageRating(parseFloat(data.averageRating.averageRating) || 0);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching reviews:', error);

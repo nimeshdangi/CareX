@@ -5,15 +5,20 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const DoctorListComponent = () => {
+    const [searchText, setSearchText] = useState('');
     const [doctors, setDoctors] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [searchTitle, setSearchTitle] = useState('Doctor List based on Popularity');
 
     useEffect(() => {
         const fetchDoctors = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor`);
                 const data = await response.json();
                 console.log(data);
                 setDoctors(data.data);
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching doctors:', error);
             }
@@ -21,14 +26,34 @@ const DoctorListComponent = () => {
         fetchDoctors();
     }, []);
 
-    if(doctors.length === 0) {
+    if(isLoading) {
         return <div className="flex justify-center items-center h-screen">Loading...</div>
     }
+
+    const getDoctorBasedOnKeyword = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor?search=${searchText}`);
+            const data = await response.json();
+            console.log(data);
+            setDoctors(data.data);
+            if(searchText === '') {
+                setSearchTitle('Doctor List based on Popularity');
+            } else {
+                setSearchTitle(`Search results for "${searchText}"`);
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching doctors:', error);
+        }
+    };
 
     return (
         <SideBar>
             <div className="relative w-1/2 mx-auto my-4">
                 <input
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
                     type="text"
                     placeholder="Search doctors by name or specialization"
                     className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -37,8 +62,8 @@ const DoctorListComponent = () => {
                     <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                 </svg>
             </div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4 w-64 flex justify-center mb-4 mx-auto">Search</button>
-            <h2 className="text-2xl font-bold text-center">Doctor List based on Popularity</h2>
+            <button onClick={getDoctorBasedOnKeyword} className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4 w-64 flex justify-center mb-4 mx-auto">Search</button>
+            <h2 className="text-2xl font-bold text-center">{searchTitle}</h2>
             <div>
                 {doctors.map((doctor, index) => (
                     <div key={index} className="flex justify-center w-2/3 mx-auto my-4 bg-gray-50 shadow-lg rounded-lg h-64">
@@ -51,7 +76,7 @@ const DoctorListComponent = () => {
                         />
                         <div className="w-2/3 p-4">
                             <h3 className="text-xl font-bold">Dr. {doctor.name}</h3>
-                            <p className="text-gray-500">Specialty: {doctor.specialization}</p>
+                            <p className="text-gray-500">Specialty: {doctor.specification}</p>
                             <p className="text-gray-500">Rating: 4.5</p>
                             <p className="text-gray-500">Experience: 10 years</p>
                             <p className="text-gray-500">50 Appointments</p>
