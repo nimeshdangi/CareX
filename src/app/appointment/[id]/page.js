@@ -1,7 +1,8 @@
 'use client'; // Make this component client-side
 
 import { useEffect, useState } from 'react';
-import VideoChat from "../../../components/VideoChat";
+// import VideoChat from "../../../components/VideoChat";
+import VideoChat from "../../../components/VideoChatTest2";
 
 const AppointmentPage = ({ params }) => {
   const { id } = params; // Get appointmentId from params
@@ -20,7 +21,7 @@ const AppointmentPage = ({ params }) => {
     return <div>Loading...</div>;
   }
 
-  return <VideoChat appointmentId={id} token={token} />;
+  return <VideoChat appointmentId={id} token={token} userRole={"patient"} />;
 };
 
 export default AppointmentPage;
