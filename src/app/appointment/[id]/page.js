@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 // import VideoChat from "../../../components/VideoChat";
-import VideoChat from "../../../components/VideoChatTest2";
+import VideoChat from "../../../components/VideoChat2";
 
 const AppointmentPage = ({ params }) => {
   const { id } = params; // Get appointmentId from params
@@ -21,7 +21,9 @@ const AppointmentPage = ({ params }) => {
     return <div>Loading...</div>;
   }
 
-  return <VideoChat appointmentId={id} token={token} userRole={"patient"} />;
+  // return <VideoChat appointmentId={id} token={token} userRole={"patient"} />;
+  return <VideoChat appointmentId={id} token={token} userRole={"patient"} />
+  // return <VideoChat />
 };
 
 export default AppointmentPage;

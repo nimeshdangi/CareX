@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 // import VideoChat from "../../../../components/VideoChat";
-import VideoChat from "../../../../components/VideoChatTest2";
+import VideoChat from "../../../../components/VideoChat2";
 
 const DoctorAppointment = ({ params }) => {
     const { id } = params;
@@ -17,7 +17,9 @@ const DoctorAppointment = ({ params }) => {
         return <div>Loading...</div>
     }
 
-    return <VideoChat appointmentId={id} token={localStorage.getItem('token')} userRole={"doctor"} />
+    // return <VideoChat appointmentId={id} token={localStorage.getItem('token')} userRole={"doctor"} />
+    // return <VideoChat />
+    return <VideoChat appointmentId={id} token={token} userRole={"doctor"} />
 }
 
 export default DoctorAppointment;
