@@ -136,7 +136,7 @@ const AppointmentComponent = () => {
                                         {(new Date(appointment?.end_date_time).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true}))}
                                     </td>
                                     <td className="px-6 py-4">
-                                        30 Minutes
+                                        {calculateDuration(appointment.start_date_time, appointment.end_date_time)}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="font-medium bg-blue-100 py-2 rounded-md text-center text-blue-600 dark:text-blue-500 hover:underline">Postpone Appointment</div>
