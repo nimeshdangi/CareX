@@ -48,11 +48,11 @@ const LoginComponent = () => {
                 <div className="flex items-center h-full">
                     <div className="my-auto px-16 w-full">
                         <h1 className="text-3xl mb-8">Login</h1>
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="email">Email Address</label>
                         <input
                             className="bg-gray-100 border-b border-gray-600 w-full text-gray-700 my-3 py-3 px-3 leading-tight focus:outline-none"
                             type="text"
-                            placeholder="Jane Doe"
+                            placeholder="johndoe@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             // aria-label="Full name"

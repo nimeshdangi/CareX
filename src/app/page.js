@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SideBar from "../components/sidebar";
 import Image from "next/image";
 
@@ -16,16 +17,18 @@ export default function Home() {
               or sports medicine, our platform connects you to trusted professionals, ensuring expert advice and support at your convenience.
             </p>
             <button className="bg-[#003D87] text-white py-2 pl-6 pr-4 rounded-md hover:bg-blue-700 transition duration-300">
-              <div className="flex justify-between">
+              <Link href={"/doctor-list"} className="flex justify-between">
                 Book Appointment &nbsp;&nbsp;&nbsp;
                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
                 </svg>
-              </div>
+              </Link>
             </button>
-            <button className="ml-3 bg-white border border-2 border-[#003D87] text-[#003D87] hover:text-white py-2 px-6 rounded-md hover:bg-[#003D87] transition duration-300">
-              Explore
-            </button>
+            <Link href="/about-us">
+              <button className="ml-3 bg-white border border-2 border-[#003D87] text-[#003D87] hover:text-white py-2 px-6 rounded-md hover:bg-[#003D87] transition duration-300">
+                Explore
+              </button>
+            </Link>
           </div>
 
           {/* Right Section - Image */}
