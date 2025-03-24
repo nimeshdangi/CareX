@@ -9,8 +9,7 @@ export default function Home() {
           {/* Left Section - Text Content */}
           <div className="w-full md:w-1/2 text-center md:text-left pr-4">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Expert Care 
-              From Care<span className="text-[#003D87]">X</span>
+              Expert Care From Care<span className="text-[#003D87]">X</span>
             </h1>
             <p className="text-lg text-gray-700 mb-6">
               Get the right specialist consultation for you or your loved ones from the comfort of your home. Whether you're seeking care for autism, therapy, 
@@ -20,7 +19,7 @@ export default function Home() {
               <div className="flex justify-between">
                 Book Appointment &nbsp;&nbsp;&nbsp;
                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+                  <path stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
                 </svg>
               </div>
             </button>
@@ -32,7 +31,7 @@ export default function Home() {
           {/* Right Section - Image */}
           <div className="w-full md:w-1/2 mt-8 md:mt-0 flex justify-center">
             <Image
-              src={"/logo.png"}
+              src={"/hero.png"}
               alt="Hero Image"
               className="max-w-full h-auto"
               width={5000}
@@ -55,11 +54,8 @@ export default function Home() {
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Autism Consultations</h5>
               </a>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Helping individuals with autism find the right care and therapy solutions.</p>
-              <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Read more
-                <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
+              <a href="#" className="inline-flex items-center py-2 text-sm font-medium text-center text-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Learn more
               </a>
             </div>
           </div>
@@ -73,11 +69,8 @@ export default function Home() {
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Therapist Consultations</h5>
               </a>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Access speech, behavioral, or physical therapy for a range of conditions.</p>
-              <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Read more
-                <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
+              <a href="#" className="inline-flex items-center py-2 text-sm font-medium text-center text-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Learn more
               </a>
             </div>
           </div>
@@ -91,11 +84,8 @@ export default function Home() {
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Sports Medicine</h5>
               </a>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Get expert advice and rehabilitation from sports injuries.</p>
-              <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Read more
-                <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
+              <a href="#" className="inline-flex items-center py-2 text-sm font-medium text-center text-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Learn more
               </a>
             </div>
           </div>
@@ -109,11 +99,8 @@ export default function Home() {
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Mental Health</h5>
               </a>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Get expert advice and rehabilitation for mental health.</p>
-              <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Read more
-                <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
+              <a href="#" className="inline-flex items-center py-2 text-sm font-medium text-center text-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Learn more
               </a>
             </div>
           </div>
