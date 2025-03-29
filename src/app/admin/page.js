@@ -1,5 +1,5 @@
 "use client"
-import AdminSideBar from "@/components/adminSideBar";
+import AdminSideBar from "../../components/adminSideBar";
 // import { Pie } from "chart.js";
 import { Pie, Line } from "react-chartjs-2";
 import { ArcElement, Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";

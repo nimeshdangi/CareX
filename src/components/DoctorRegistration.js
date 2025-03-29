@@ -36,7 +36,7 @@ const DoctorRegisterComponent = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/doctor/registration', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/registration`, {
                 method: "POST",
                 body: formData
             });

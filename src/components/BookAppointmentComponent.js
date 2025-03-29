@@ -17,7 +17,7 @@ const BookAppointmentComponent = () => {
     useEffect(() => {
         const fetchTimeSlots = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/doctor/time_slots?doctor_id=${id}&date=${appointmentDate}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/time_slots?doctor_id=${id}&date=${appointmentDate}`);
                 const data = await response.json();
                 console.log(data);
                 setTimeSlots(data.data);
@@ -26,12 +26,12 @@ const BookAppointmentComponent = () => {
             }
         };
         fetchTimeSlots();
-    }, [appointmentDate]);
+    }, [appointmentDate, id]);
 
     useEffect(() => {
         const fetchDoctor = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/doctor/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/${id}`);
                 const data = await response.json();
                 console.log(data);
                 setDoctor(data.data);
@@ -53,7 +53,7 @@ const BookAppointmentComponent = () => {
         const appointmentId = timeSlots[selectedTimeIndex].id;
 
         try {
-            const response = await fetch(`http://localhost:5000/patient/book-appointment`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/book-appointment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -121,9 +121,9 @@ const BookAppointmentComponent = () => {
                         <div className="mt-3 space-x-2">
                             {timeSlots.map((timeSlot, index) => (
                                 <p key={index} onClick={() => setSelectedTimeIndex(index)} className={`inline-block p-2 rounded-lg border border-gray-600 ${selectedTimeIndex === index ? 'bg-blue-500 text-white' : 'text-gray-500'}`}>
-                                    {(new Date(timeSlot.start_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true})}
+                                    {(new Date(timeSlot.start_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true, timeZone: "UTC"})}
                                     {" - "}
-                                    {(new Date(timeSlot.end_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true})}
+                                    {(new Date(timeSlot.end_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true, timeZone: "UTC"})}
                                 </p>
                             ))}
                         </div>
