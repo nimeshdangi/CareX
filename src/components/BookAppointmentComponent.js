@@ -121,9 +121,9 @@ const BookAppointmentComponent = () => {
                         <div className="mt-3 space-x-2">
                             {timeSlots.map((timeSlot, index) => (
                                 <p key={index} onClick={() => setSelectedTimeIndex(index)} className={`inline-block p-2 rounded-lg border border-gray-600 ${selectedTimeIndex === index ? 'bg-blue-500 text-white' : 'text-gray-500'}`}>
-                                    {(new Date(timeSlot.start_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true, timeZone: "UTC"})}
+                                    {(new Date(timeSlot.start_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true, timeZone: "Asia/Katmandu"})}
                                     {" - "}
-                                    {(new Date(timeSlot.end_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true, timeZone: "UTC"})}
+                                    {(new Date(timeSlot.end_date_time)).toLocaleTimeString('en-US', {hour: "numeric", minute: "numeric", hour12: true, timeZone: "Asia/Katmandu"})}
                                 </p>
                             ))}
                         </div>

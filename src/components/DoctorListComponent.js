@@ -43,7 +43,7 @@ const DoctorListComponent = () => {
                 {doctors.map((doctor, index) => (
                     <div key={index} className="flex justify-center w-2/3 mx-auto my-4 bg-gray-50 shadow-lg rounded-lg h-64">
                         <Image
-                            src="/doctor1.jpeg"
+                            src={doctor.image !== null ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${doctor.image}` : "/doctor1.jpeg"}
                             alt="doctor"
                             width={500}
                             height={500}

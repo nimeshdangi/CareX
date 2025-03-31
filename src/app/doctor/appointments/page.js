@@ -41,7 +41,7 @@ const Appointments = () => {
         }
 
         const formattedAppointments = data.data.map((appointment) => ({
-          title: appointment.patient_id ? "Appointment Slot Booked" : "Slot Not Booked Yet",
+          title: appointment.patient_id ? appointment.status == "Booked" ? "Appointment Slot Booked" : appointment.status : "Slot Not Booked Yet",
           start: new Date(appointment.start_date_time),
           end: new Date(appointment.end_date_time),
           id: appointment._id,

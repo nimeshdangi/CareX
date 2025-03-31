@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import SideBar from "../../components/sidebar";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProfilePage = () => {
     const router = useRouter();
@@ -40,7 +41,7 @@ const ProfilePage = () => {
                 <div className="w-full max-w-xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-5 pb-5">
                     <div className="flex flex-col items-center space-y-4 p-6">
                         <div className="w-24 h-24 rounded-full overflow-hidden">
-                            <Image src="/doctor.jpg" width={200} height={200} alt="Profile Picture" className="w-full h-full object-cover" />
+                            <Image src={profile.image !== null ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${profile.image}` : "/doctor.jpg"} width={200} height={200} alt="Profile Picture" className="w-full h-full object-cover" />
                         </div>
                         <div className="text-center space-y-1">
                             <h2 className="text-2xl font-bold">{profile.name}</h2>
@@ -57,6 +58,9 @@ const ProfilePage = () => {
                         <p className="text-gray-600">
                             <strong>Address: </strong>{profile.address}
                         </p>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+                            <Link href={'/edit-profile'}>Edit Profile</Link>
+                        </button>
                         {/* <p className="text-gray-600">
                             <strong>Registration Number: </strong>{profile.registrationNumber}
                         </p>
