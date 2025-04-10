@@ -16,6 +16,23 @@ const RegisterComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!name || !email || !phone_number || !address || !password) {
+            const errors = [];
+            if (!name) errors.push("Name is required");
+            if (!email) errors.push("Email is required");
+            if (!phone_number) errors.push("Phone number is required");
+            if (!address) errors.push("Address is required");
+            if (!password) errors.push("Password is required");
+
+            errors.forEach((msg, index) => {
+                setTimeout(() => {
+                    toast.error(msg);
+                }, index * 700);
+            });
+
+            return;
+        }
+
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/registration`, {
                 method: "POST",
@@ -30,6 +47,8 @@ const RegisterComponent = () => {
             if(response.status === 201) {
                 toast.success(result.message + " Please Login.");
                 router.push('/login');
+            } else {
+                toast.error(result.message);
             }
         } catch (error) {
             toast.error(error.message);

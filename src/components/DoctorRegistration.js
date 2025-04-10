@@ -23,6 +23,40 @@ const DoctorRegisterComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!name || !email || !phone_number || !registrationNumber || !specification || !qualification || !password) {
+            const errors = [];
+            if (!name) errors.push("Name is required");
+            if (!email) errors.push("Email is required");
+            if (!phone_number) errors.push("Phone number is required");
+            if (!registrationNumber) errors.push("Registration Number is required");
+            if (!specification) errors.push("Specialization is required");
+            if (!qualification) errors.push("Qualification is required");
+            if (!password) errors.push("Password is required");
+
+            errors.forEach((msg, index) => {
+                setTimeout(() => {
+                    toast.error(msg);
+                }, index * 700);
+            });
+            return;
+        }
+
+        if (documents && documents.size > 5 * 1024 * 1024) {
+            toast.error("File size exceeds 5MB limit.");
+            return;
+        }
+
+        // check if documents is a valid file type (e.g., pdf, jpg, png), is not empty
+        if (documents && documents.size === 0) {
+            toast.error("File is empty. Please upload a valid file.");
+            return;
+        }
+        const validFileTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+        if (documents && !validFileTypes.includes(documents.type)) {
+            toast.error("Invalid file type. Please upload a PDF, JPG, or PNG file.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append('name', name);
         formData.append('email', email);

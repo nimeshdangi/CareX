@@ -32,7 +32,11 @@ const ProfilePage = () => {
 
     return (
         <DoctorSideBar>
-            {loading ? <div>Loading...</div> : (
+            {loading ? (
+                <div className="flex justify-center items-center h-screen">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+                </div>
+            ) : (
                 <div className="w-full max-w-xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-5 pb-5">
                     <div className="flex flex-col items-center space-y-4 p-6">
                         <div className="w-24 h-24 rounded-full overflow-hidden">
@@ -58,7 +62,7 @@ const ProfilePage = () => {
                         </p>
                         <p>
                             <strong>Documents: </strong>
-                            <Image src={`${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/documents/${profile.documents}`} width={200} height={200} alt="Profile Picture" className="w-2/3 h-auto mx-auto  " />
+                            <Image src={`${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${profile.documents}`} width={200} height={200} alt="Profile Picture" className="w-2/3 h-auto mx-auto  " />
                         </p>
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
                             <Link href={'/doctor/edit-profile'}>Edit Profile</Link>
