@@ -86,27 +86,27 @@ const DoctorDashboard = () => {
             }
         }
 
-        const fetchAppointmentsToday = async () => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/appointments-today`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': localStorage.getItem('token')
-                    }
-                });
-                const data = await response.json();
-                console.log(data);
-                setAppointmentsToday(data.data);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
         fetchAppointmentStats();
         fetchUpcomingAppointments();
         fetchAppointmentsToday();
         fetchPreviousAppointments();
     }, []);
+
+    const fetchAppointmentsToday = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/appointments-today`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            });
+            const data = await response.json();
+            console.log(data);
+            setAppointmentsToday(data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const fetchPreviousAppointments = async () => {
         try {
@@ -139,6 +139,7 @@ const DoctorDashboard = () => {
             if (response.ok) {
                 toast.success(data.message);
                 fetchPreviousAppointments();
+                fetchAppointmentsToday();
             }
         } catch (error) {
             console.error(error);
@@ -246,12 +247,12 @@ const DoctorDashboard = () => {
                                                             Join Video Consultation
                                                         </button>
                                                     ) : (
-                                                        appointmentsToday.status === "Completed" ?
-                                                            "Completed"
+                                                        appointment?.status === "Completed" ?
+                                                            <div onClick={() => router.push(`/doctor/appointments/${appointment.id}`)} className="font-medium bg-blue-100 py-2 rounded-md text-center text-blue-600 dark:text-blue-500 hover:bg-blue-200">View Appointment Detials</div>
                                                         : (
                                                             now > endTime ? (
                                                                 <>
-                                                                    <div className="font-medium bg-green-100 py-2 rounded-md text-center text-green-600 dark:text-green-500 hover:bg-green-200">Mark as Completed</div>
+                                                                    <div onClick={() => markAsCompleted(appointment.id)} className="font-medium bg-green-100 py-2 rounded-md text-center text-green-600 dark:text-green-500 hover:bg-green-200">Mark as Completed</div>
                                                                 </>
                                                             ): (
                                                                 timeRemaining > 0 && timeRemaining < 15 ? (
@@ -279,91 +280,6 @@ const DoctorDashboard = () => {
                                     </tr>
                                 )
                             }
-                            {/* <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    John Doe
-                                </th>
-                                <td className="px-6 py-4">
-                                    6:00 AM
-                                </td>
-                                <td className="px-6 py-4">
-                                    6:30 AM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Completed</span>
-                                </td>
-                            </tr>
-                            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Pro Patient
-                                </th>
-                                <td className="px-6 py-4">
-                                    7:00 AM
-                                </td>
-                                <td className="px-6 py-4">
-                                    7:30 AM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Postponed to later(By Patient)</span>
-                                </td>
-                            </tr>
-                            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Alexander
-                                </th>
-                                <td className="px-6 py-4">
-                                    8:00 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    8:30 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <div className="rounded-lg bg-blue-500 text-white px-3 py-1 text-center">Start Video Consultation</div>
-                                </td>
-                            </tr>
-                            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Daniel Grayson
-                                </th>
-                                <td className="px-6 py-4">
-                                    9:00 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    9:30 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Pending</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    N/A
-                                </th>
-                                <td className="px-6 py-4">
-                                    10:00 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    10:30 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Not Booked yet</span>
-                                </td>
-                            </tr> */}
                         </tbody>
                     </table>
                 </div>
@@ -470,7 +386,7 @@ const DoctorDashboard = () => {
                                             <div onClick={() => markAsCompleted(appointment?.id)} className="font-medium cursor-pointer bg-green-100 py-2 rounded-md text-center text-green-600 dark:text-green-500 hover:bg-green-200">Mark as Completed</div>
                                         ) : (
                                             appointment?.status == "Completed" ? (
-                                                <span className="font-medium text-green-600 dark:text-green-500 hover:underline">Completed</span>
+                                                <div onClick={() => router.push(`/doctor/appointments/${appointment.id}`)} className="font-medium bg-blue-100 py-2 rounded-md text-center text-blue-600 dark:text-blue-500 hover:bg-blue-200">View Appointment Detials</div>
                                             ): (
                                                 <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Not Booked yet</span>
                                             )
