@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import VideoChat from "../../../components/VideoChat2";
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const AppointmentPage = ({ params }) => {
   const { id } = params;
@@ -14,6 +14,7 @@ const AppointmentPage = ({ params }) => {
   const [isReadyForVideo, setIsReadyForVideo] = useState(false);
   const [showAppointmentDetails, setShowAppointmentDetails] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const userToken = localStorage.getItem('token');
@@ -111,8 +112,8 @@ const AppointmentPage = ({ params }) => {
         {appointmentDetails?.prescription && (
           <p className='text-lg text-center'><span className='font-bold text-xl'>Prescription</span><br /> {appointmentDetails.prescription}</p>
         )}
-        <button onClick={() => router.push("/")} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-          Go back to Home
+        <button onClick={() => pathname.startsWith("/doctor") ? router.push("/doctor") : router.push("/appointment")} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+          Go back to Appointments
         </button>
       </div>
     )

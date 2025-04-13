@@ -8,8 +8,15 @@ const nextConfig = {
                 port: '5000',
                 pathname: '**',
             },
+            {
+                protocol: 'https',
+                hostname: 'localhost',
+                port: '5000',
+                pathname: '**',
+            }
         ],
     },
+    reactStrictMode: false,
 };
 
 export default nextConfig;

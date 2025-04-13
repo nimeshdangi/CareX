@@ -186,10 +186,10 @@ const DoctorDashboard = () => {
                                     Patient Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Consultation Start Time
+                                    Consultation Date
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Consultation End Time
+                                    Consultation Time
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Consultation Period
@@ -204,7 +204,7 @@ const DoctorDashboard = () => {
                         </thead>
                         <tbody>
                             {
-                                appointmentsToday.length > 0 ? (appointmentsToday.map((appointment) => {
+                                appointmentsToday?.length > 0 ? (appointmentsToday.map((appointment) => {
                                     const now = new Date();
                                     const startTime = new Date(appointment.start_date_time);
                                     const endTime = new Date(appointment.end_date_time);

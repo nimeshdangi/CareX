@@ -109,58 +109,58 @@ const BookAppointmentComponent = () => {
 
             // code for khalti payment
 
-            // const payload = {
-            //     return_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/payment-complete/`,
-            //     website_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}`,
-            //     amount: price * 100,
-            //     purchase_order_id: appointmentId,
-            //     purchase_order_name: `Appointment with Dr. ${doctor.name}`,
-            // }
-            // console.log(payload);
+            const payload = {
+                return_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/payment-complete/`,
+                website_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}`,
+                amount: price * 100,
+                purchase_order_id: appointmentId,
+                purchase_order_name: `Appointment with Dr. ${doctor.name}`,
+            }
+            console.log(payload);
 
-            // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/khalti-api`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(payload),
-            // });
-
-            // const data = await response.json();
-            // console.log(data);
-            // // toast.success("Payment Succeeded via Khalti");
-
-            // if (response.ok) {
-            //     window.location.href = data.data.payment_url;
-            // } else {
-            //     toast.error(data.message);
-            // }
-
-            // code without khalti payment
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/book-appointment`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/khalti-api`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": localStorage.getItem("token")
                 },
-                body: JSON.stringify({doctor_id: id, appointment_id: appointmentId}),   
+                body: JSON.stringify(payload),
             });
 
-            console.log(response);
-
-            const result = await response.json();
-            console.log(result);
+            const data = await response.json();
+            console.log(data);
+            // toast.success("Payment Succeeded via Khalti");
 
             if (response.ok) {
-                toast.success(result.message);
-                router.push("/appointment");
-            } else if (response.status === 401) {
-                toast.error(result.message);
-                router.push("/login");
+                window.location.href = data.data.payment_url;
             } else {
-                toast.error(result.message);
+                toast.error(data.message);
             }
+
+            // code without khalti payment
+
+            // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/book-appointment`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "Authorization": localStorage.getItem("token")
+            //     },
+            //     body: JSON.stringify({doctor_id: id, appointment_id: appointmentId}),   
+            // });
+
+            // console.log(response);
+
+            // const result = await response.json();
+            // console.log(result);
+
+            // if (response.ok) {
+            //     toast.success(result.message);
+            //     router.push("/appointment");
+            // } else if (response.status === 401) {
+            //     toast.error(result.message);
+            //     router.push("/login");
+            // } else {
+            //     toast.error(result.message);
+            // }
         } catch (error) {
             toast.error(error.message);
         }

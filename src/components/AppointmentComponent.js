@@ -287,86 +287,6 @@ const AppointmentComponent = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    John Doe
-                                </th>
-                                <td className="px-6 py-4">
-                                    Neurology
-                                </td>
-                                <td className="px-6 py-4">
-                                    2024-01-01
-                                </td>
-                                <td className="px-6 py-4">
-                                    6:00 AM - 6:30 AM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Completed</span>
-                                </td>
-                            </tr>
-                            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Pro Doctor
-                                </th>
-                                <td className="px-6 py-4">
-                                    Oncology
-                                </td>
-                                <td className="px-6 py-4">
-                                    2024-01-02
-                                </td>
-                                <td className="px-6 py-4">
-                                    7:00 AM - 7:30 AM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Postponed to later(By You)</span>
-                                </td>
-                            </tr>
-                            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Alexander
-                                </th>
-                                <td className="px-6 py-4">
-                                    Cardiology
-                                </td>
-                                <td className="px-6 py-4">
-                                    2024-01-03
-                                </td>
-                                <td className="px-6 py-4">
-                                    8:00 PM - 8:30 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Completed</span>
-                                </td>
-                            </tr>
-                            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Daniel Grayson
-                                </th>
-                                <td className="px-6 py-4">
-                                    Psychology
-                                </td>
-                                <td className="px-6 py-4">
-                                    2024-01-04
-                                </td>
-                                <td className="px-6 py-4">
-                                    9:00 PM - 9:30 PM
-                                </td>
-                                <td className="px-6 py-4">
-                                    30 Minutes
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Completed</span>
-                                </td>
-                            </tr> */}
                             {pastAppointments?.map((appointment) => (
                                 <tr key={appointment.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -395,10 +315,7 @@ const AppointmentComponent = () => {
                                     <td className="px-6 py-4">
                                         {appointment.status === "Completed" ? (
                                             <span className="font-medium text-blue-600 dark:text-blue-500">
-                                                Completed
-                                                {appointment.doctor.reviews.length == 0 && 
-                                                    <button onClick={() => {setSelectedDoctorId(appointment.doctor.id);setIsReviewModalOpen(true);}} className="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Add Review</button>
-                                                }
+                                                <div onClick={() => router.push(`/appointment/${appointment.id}`)} className="font-medium bg-blue-100 py-2 rounded-md text-center text-blue-600 dark:text-blue-500 hover:bg-blue-200">View Appointment Detials</div>
                                             </span>
                                         ) : (
                                             <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{appointment.status}</span>
