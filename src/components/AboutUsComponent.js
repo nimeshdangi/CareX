@@ -203,7 +203,7 @@ const AboutUsComponent = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
                     <div className={`bg-neutral-200 rounded-xl px-7 pb-3 pt-5 ${testimonialInView ? "animate-slideRight" : "opacity-0"}`}>
                         <p className="text-left italic">
-                            "CareX has been a lifeline for me during tough times. I can schedule appointments around my busy schedule and get the mental health support I need from a dedicated professional."
+                            &apos;CareX has been a lifeline for me during tough times. I can schedule appointments around my busy schedule and get the mental health support I need from a dedicated professional.&apos;
                         </p>
                         <p className="text-right flex items-center justify-end space-x-4">
                             <span>— Nirvana Bhattarai, CareX User</span>
@@ -218,7 +218,7 @@ const AboutUsComponent = () => {
                     </div>
                     <div className={`bg-neutral-200 rounded-xl px-7 pb-3 pt-5 ${testimonialInView ? "animate-slideLeft" : "opacity-0"}`} >
                         <p className="text-left italic">
-                            "As a specialist, CareX allows me to connect with patients who may not have the means to access in-person care. The platform is simple and effective, enabling me to focus on what matters: helping my patients."
+                            &apos;As a specialist, CareX allows me to connect with patients who may not have the means to access in-person care. The platform is simple and effective, enabling me to focus on what matters: helping my patients.&apos;
                         </p>
                         <p className="text-right flex items-center justify-end space-x-4">
                             <span>— Dr. Anu Neupane, CareX Specialist</span>
