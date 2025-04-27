@@ -38,7 +38,7 @@ const BookAppointmentComponent = () => {
                 const data = await response.json();
                 console.log(data);
                 setDoctor(data.data);
-                setAverageRating(parseFloat(data.data.averageRating) || 0);
+                setAverageRating(parseFloat(data.data?.averageRating) || 0);
             } catch (error) {
                 toast.error(error.message);
             }
@@ -237,7 +237,7 @@ const BookAppointmentComponent = () => {
                             <h2 className="text-2xl font-bold">Average Rating</h2>
                             <div className="flex items-center">
                                 <span className="text-4xl font-bold">
-                                    {averageRating != null ? averageRating.toFixed(1) : 'N/A'}
+                                    {averageRating != 0 ? averageRating.toFixed(1) : 'N/A'}
                                 </span>
                                 <div className="ml-2">{renderStars(averageRating)}</div>
                             </div>
