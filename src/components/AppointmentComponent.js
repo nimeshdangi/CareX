@@ -315,7 +315,7 @@ const AppointmentComponent = () => {
                                     <td className="px-6 py-4">
                                         {appointment.status === "Completed" ? (
                                             <span className="font-medium text-blue-600 dark:text-blue-500">
-                                                <div onClick={() => router.push(`/appointment/${appointment.id}`)} className="font-medium bg-blue-100 py-2 rounded-md text-center text-blue-600 dark:text-blue-500 hover:bg-blue-200">View Appointment Detials</div>
+                                                <div onClick={() => router.push(`/appointment/${appointment.id}`)} className="font-medium bg-blue-100 py-2 rounded-md text-center text-blue-600 dark:text-blue-500 hover:bg-blue-200 cursor-pointer">View Appointment Detials</div>
                                             </span>
                                         ) : (
                                             <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{appointment.status}</span>
