@@ -70,7 +70,7 @@ const RegisterComponent = () => {
 
             {/* Centered Content */}
             <div className="absolute inset-0 flex items-center justify-center z-10">
-                <div className="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full">
+                <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full">
                     {/* Your content here */}
                     <h1 className="text-4xl font-bold mb-4 text-center">Sign Up</h1>
                     <p className="mb-8 text-center">With account you can consult with our therapists</p>
@@ -83,28 +83,31 @@ const RegisterComponent = () => {
                                 placeholder="Full Name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="flex-1">
                             <label htmlFor="email">Contact Number</label>
                             <input
                                 className="bg-gray-100 border-b border-gray-600 w-full text-gray-700 my-3 py-3 px-3 leading-tight focus:outline-none"
-                                type="text"
+                                type="tel"
+                                pattern="^(\+977-?)?(98|97)\d{8}$"
+                                title="Enter a valid Nepali phone number (e.g., 9801234567 or +9779801234567)"
                                 placeholder="Phone Number"
                                 value={phone_number}
                                 onChange={(e) => setPhoneNumber(e.target.value)}
-                                aria-label="Full name"
+                                required
                             />
                         </div>
                     </div>
                     <label htmlFor="email">Email</label>
                     <input
                         className="bg-gray-100 border-b border-gray-600 w-full text-gray-700 my-3 py-3 px-3 leading-tight focus:outline-none"
-                        type="text"
+                        type="email"
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        aria-label="Full name"
+                        required
                     />
                     <label htmlFor="email">Address</label>
                     <input
@@ -113,7 +116,7 @@ const RegisterComponent = () => {
                         placeholder="Address"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        aria-label="Full name"
+                        required
                     />
                     <label htmlFor="email">Password</label>
                     <input
@@ -122,17 +125,17 @@ const RegisterComponent = () => {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                     <button
                         className="bg-blue-600 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
-                        type="button"
-                        onClick={handleSubmit}
+                        type="submit"
                     >
                         Sign Up
                     </button>
                     <p className="mt-2 text-sm text-center"><Link href="/doctor-registration">Register as a Doctor</Link></p>
                     <p className="mt-2 text-sm text-center"><Link href={"/login"}>Already have an account?</Link></p>
-                </div>
+                </form>
             </div>
         </div>
     )

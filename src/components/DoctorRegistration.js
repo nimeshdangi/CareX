@@ -101,7 +101,7 @@ const DoctorRegisterComponent = () => {
 
             {/* Centered Content */}
             <div className="absolute inset-0 flex items-center justify-center z-10">
-                <div className="bg-white rounded-lg shadow-lg px-8 py-4 max-w-2xl w-full">
+                <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg px-8 py-4 max-w-2xl w-full">
                     {/* Your content here */}
                     <h1 className="text-4xl font-bold mb-4 text-center">Sign Up</h1>
                     <p className="mb-8 text-center">With account you can consult with our therapists</p>
@@ -114,16 +114,20 @@ const DoctorRegisterComponent = () => {
                                 placeholder="Full Name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="flex-1">
                             <label htmlFor="email">Contact Number</label>
                             <input
                                 className="bg-gray-100 border-b border-gray-600 w-full text-gray-700 my-3 py-3 px-3 leading-tight focus:outline-none"
-                                type="text"
+                                type="tel"
+                                pattern="^(\+977-?)?(98|97)\d{8}$"
+                                title="Enter a valid Nepali phone number (e.g., 9801234567 or +9779801234567)"
                                 placeholder="Contact Number"
                                 value={phone_number}
                                 onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
@@ -132,10 +136,11 @@ const DoctorRegisterComponent = () => {
                             <label htmlFor="email">Email</label>
                             <input
                                 className="bg-gray-100 border-b border-gray-600 w-full text-gray-700 my-3 py-3 px-3 leading-tight focus:outline-none"
-                                type="text"
+                                type="email"
                                 placeholder="Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="flex-1">
@@ -146,6 +151,7 @@ const DoctorRegisterComponent = () => {
                                 placeholder="Specialization"
                                 value={specification}
                                 onChange={(e) => setSpecification(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
@@ -158,6 +164,7 @@ const DoctorRegisterComponent = () => {
                                 placeholder="Registration Number"
                                 value={registrationNumber}
                                 onChange={(e) => setRegistrationNumber(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="flex-1">
@@ -168,6 +175,7 @@ const DoctorRegisterComponent = () => {
                                 placeholder="Qualification"
                                 value={qualification}
                                 onChange={(e) => setQualification(e.target.value)}
+                                required
                             />
                         </div>
                     </div>
@@ -177,6 +185,8 @@ const DoctorRegisterComponent = () => {
                         type="file"
                         placeholder="Documents like ID, Certificate, etc."
                         onChange={handleFileChange}
+                        accept=".jpg, .jpeg, .png"
+                        required
                     />
                     <label htmlFor="email">Password</label>
                     <input
@@ -185,17 +195,17 @@ const DoctorRegisterComponent = () => {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                     <button
                         className="bg-blue-600 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
-                        type="button"
-                        onClick={handleSubmit}
+                        type="submit"
                     >
                         Sign Up
                     </button>
                     <p className="mt-2 text-sm text-center"><Link href="/register">Not a doctor? Sign up as a patient</Link></p>
                     <p className="mt-2 text-sm text-center"><Link href={"/login"}>Already have an account?</Link></p>
-                </div>
+                </form>
             </div>
         </div>
     )

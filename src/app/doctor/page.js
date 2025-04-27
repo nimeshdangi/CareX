@@ -152,19 +152,19 @@ const DoctorDashboard = () => {
             {/* <h1 className="text-4xl font-bold mb-4 text-center">Doctor Dashboard</h1> */}
             <div className="flex justify-evenly flex-wrap mt-5">
                 <div>
-                    <div className="w-48 h-48 border border-blue-500 border-[3px] rounded-3xl flex flex-col justify-center items-center px-5 text-center gap-3">
+                    <div className="w-48 h-48 border-blue-500 border-[3px] rounded-3xl flex flex-col justify-center items-center px-5 text-center gap-3">
                         <h1 className="text-4xl font-bold">{appointmentStats.completedAppointmentsCount}</h1>
                         Total Appointments
                     </div>
                 </div>
                 <div>
-                    <div className="w-48 h-48 border border-blue-500 border-[3px] rounded-3xl flex flex-col justify-center items-center px-5 text-center gap-3">
+                    <div className="w-48 h-48 border-blue-500 border-[3px] rounded-3xl flex flex-col justify-center items-center px-5 text-center gap-3">
                         <h1 className="text-4xl font-bold">{appointmentStats.uniquePatientsCount}</h1>
                         Total Patients
                     </div>
                 </div>
                 <div>
-                    <div className="w-48 h-48 border border-blue-500 border-[3px] rounded-3xl flex flex-col justify-center items-center px-5 text-center gap-3">
+                    <div className="w-48 h-48 border-blue-500 border-[3px] rounded-3xl flex flex-col justify-center items-center px-5 text-center gap-3">
                         <h1 className="text-4xl font-bold">{appointmentStats.appointmentsThisMonth}</h1>
                         Appointments this month
                     </div>
