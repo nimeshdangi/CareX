@@ -24,6 +24,7 @@ const PaymentSuccessPage = () => {
                         };
 
                         console.log(dataToSend);
+                        // console.log(localStorage.getItem('token'));
     
                         // Send the data to the backend using fetch with async/await
                         const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/payment-complete`, {

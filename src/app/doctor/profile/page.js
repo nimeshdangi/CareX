@@ -40,7 +40,7 @@ const ProfilePage = () => {
                 <div className="w-full max-w-xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-5 pb-5">
                     <div className="flex flex-col items-center space-y-4 p-6">
                         <div className="w-24 h-24 rounded-full overflow-hidden">
-                            <Image src={profile.image !== null ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${profile.image}`: '/doctor.jpg'} width={200} height={200} alt="Profile Picture" className="w-full h-full object-cover" />
+                            <Image src={profile.image !== null ? `${profile.image}`: '/doctor.jpg'} width={200} height={200} alt="Profile Picture" className="w-full h-full object-cover" />
                         </div>
                         <div className="text-center space-y-1">
                             <h2 className="text-2xl font-bold">{profile.name}</h2>
