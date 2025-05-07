@@ -20,6 +20,7 @@ const nextConfig = {
                 pathname: '**',
             }
         ],
+        domains: ["res.cloudinary.com"]
     },
     reactStrictMode: false,
 };
