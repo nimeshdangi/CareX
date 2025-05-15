@@ -23,6 +23,7 @@ const ProfilePage = () => {
                     }
                 });
                 const data = await response.json();
+                console.log(data);
                 if(response.status === 401) {
                     toast.error(data.message);
                     router.push('/login');

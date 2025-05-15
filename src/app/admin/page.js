@@ -3,6 +3,7 @@ import AdminSideBar from "../../components/adminSideBar";
 // import { Pie } from "chart.js";
 import { Pie, Line } from "react-chartjs-2";
 import { ArcElement, Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { useEffect, useState } from "react";
 
 ChartJS.register(
     CategoryScale,
@@ -36,48 +37,81 @@ const generateLabels = () => {
 };
 
 const AdminPanel = () => {
-    const labelForLine = generateLabels();
+    const [doctorCount, setDoctorCount] = useState(0);
+    const [unapprovedDoctorCount, setUnapprovedDoctorCount] = useState(0);
+    const [patientCount, setPatientCount] = useState(0);
+    const [weeklyAppointments, setWeeklyAppointments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const labelsForLine = generateLabels();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [countRes, appointmentRes] = await Promise.all([
+                    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/patient-doctor-count`),
+                    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/this-week-appointments`),
+                ]);
+
+                const doctorPatientData = await countRes.json();
+                const weeklyData = await appointmentRes.json();
+                console.log(doctorPatientData, weeklyData);
+
+                setDoctorCount(doctorPatientData.approvedDoctor || 0);
+                setUnapprovedDoctorCount(doctorPatientData.unapprovedDoctor || 0);
+                setPatientCount(doctorPatientData.patient || 0);
+
+                setWeeklyAppointments(weeklyData.counts || []);
+            } catch (error) {
+                console.error("Error fetching admin dashboard data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <AdminSideBar>
             <div>
-                <div className="w-1/3 mx-auto">
+                {loading ? (
+                    <p className="text-center mt-20">Loading dashboard...</p>
+                ) : (
+                <div className="w-1/3 mx-auto mt-10">
                     <Pie
                         data={{
                             labels: ["Approved Doctors", "Unapproved Doctors", "Patients"],
                             datasets: [
-                                {
-                                    label: "",
-                                    data: [2, 3, 10],
-                                    backgroundColor: ["#36A2EB", "#FF6384", "#FFCE56"],
-                                },
-                            ]
+                            {
+                                data: [doctorCount, unapprovedDoctorCount, patientCount],
+                                backgroundColor: ["#36A2EB", "#FF6384", "#FFCE56"],
+                            },
+                            ],
                         }}
                     />
                     <br />
                     <Line
                         data={{
-                            labels: labelForLine,
+                            labels: labelsForLine,
                             datasets: [
-                                {
-                                    label: "Number of Appointments",
-                                    data: [12, 10, 15, 20, 25, 30, 35],
-                                    fill: true,
-                                    backgroundColor: "#FF6384",
-                                    borderColor: "#FF6384",
-                                    tension: 0.1,
-                                }
-                            ]
+                            {
+                                label: "Appointments This Week",
+                                data: weeklyAppointments,
+                                fill: true,
+                                backgroundColor: "rgba(255,99,132,0.2)",
+                                borderColor: "#FF6384",
+                                tension: 0.2,
+                            },
+                            ],
                         }}
                         options={{
                             scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
+                            y: { beginAtZero: true },
+                            },
                         }}
                     />
                 </div>
+                )}
             </div>
         </AdminSideBar>
     )

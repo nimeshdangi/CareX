@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 const Topbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [patientName, setPatientName] = useState("Patient");
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -35,16 +36,48 @@ const Topbar = () => {
             }
         }
 
+        const getProfile = async () => {
+            const token = localStorage.getItem("token");
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/profile`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": token
+                    }
+                })
+
+                const data = await response.json();
+                console.log(data);
+                if(response.ok) {
+                    // if(data.data.role == "patient") {
+                    //     setIsLoggedIn(true);
+                    // } else if (data.data.role == "doctor") {
+                    //     router.push("/doctor");
+                    // } else if (data.data.role == "admin") {
+                    //     router.push("/admin");
+                    // }
+                    setPatientName(data.data.name);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            } catch (error) {
+                console.error("Error checking authentication:", error);
+                setIsLoggedIn(false);
+            }
+        }
+
         checkAuth();
+        getProfile();
     }, []);
 
     return (
         <div className={`bg-gradient-to-r from-[#B5D2F0] to-[#FCF7E1] flex items-center ${isLoggedIn ? "justify-between" : "justify-center"} px-4 py-4`}>
             {isLoggedIn ? (
-                <h1 className="text-2xl font-bold text-gray">Welcome, Patient</h1>
+                <h1 className="text-2xl font-bold text-gray">Welcome, {patientName}</h1>
             ): (null)}
             <form className="w-1/3">   
-                <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <label htmlFor="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
