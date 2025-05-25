@@ -326,7 +326,7 @@ const DoctorDashboardComponent = () => {
                                         {calculateDuration(appointment?.start_date_time, appointment?.end_date_time)}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Not Booked yet</span>
+                                        <span className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{appointment.status}</span>
                                     </td>
                                 </tr>
                             ))): (
@@ -366,7 +366,7 @@ const DoctorDashboardComponent = () => {
                         </thead>
                         <tbody>
                             {appointmentHistory?.length > 0 ? (appointmentHistory.map((appointment) => (
-                                <tr key={appointment.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <tr key={appointment.id} className={`odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 ${appointmentId == appointment.id ? '!bg-blue-200' : ''}`}>
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {appointment?.patient?.name || "N/A"}
                                     </th>
