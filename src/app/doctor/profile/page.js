@@ -63,7 +63,7 @@ const ProfilePage = () => {
                         <p>
                             <strong>Documents: </strong>
                             <Image
-                                src={!profile.documents.includes("\\") ? `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${profile.documents}` : profile.documents} 
+                                src={profile.documents.includes("\\") ? `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${profile.documents}` : profile.documents} 
                                 width={200} 
                                 height={200} 
                                 alt="Profile Picture" 
