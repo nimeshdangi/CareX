@@ -97,11 +97,16 @@ const DoctorListComponent = () => {
                 {doctors.map((doctor, index) => (
                     <div key={index} className="flex justify-center w-2/3 mx-auto my-4 bg-gray-50 shadow-lg rounded-lg h-64">
                         <Image
-                            src={doctor.image !== null ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${doctor.image}` : "/doctor1.jpeg"}
+                            src={doctor.image !== null ?
+                                doctor.image.startsWith("http") ?
+                                doctor.image : 
+                                `${process.env.NEXT_PUBLIC_SERVER_URL}/${doctor.image}` : 
+                                "/doctor1.jpeg"}
                             alt="doctor"
                             width={500}
                             height={500}
                             className="rounded-l-lg w-1/3 object-cover"
+                            unoptimized
                         />
                         <div className="w-2/3 p-4">
                             <h3 className="text-xl font-bold">Dr. {doctor.name}</h3>

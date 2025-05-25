@@ -244,8 +244,8 @@ const App = ({ appointmentId, token, userRole }) => {
             <video className='relative top-4 left-4 w-full scale-x-[-1]' ref={remoteVideo} autoPlay playsInline />
             <video className='relative -top-[200px] left-[400px] w-1/3 scale-x-[-1]' ref={myVideo} autoPlay playsInline muted />
             <div className="absolute -bottom-32 left-0 right-0 flex justify-evenly">
-              <button className="p-5 border border-black rounded-full" onClick={toggleMute}>{isMuted ? <VolumeUnmute /> : <VolumeMute />}</button>
-              <button className='p-5 border border-black rounded-full' onClick={toggleCamera}>{isCameraOff ? <Camera /> : <CameraDisable />}</button>
+              <button className="p-5 border border-black rounded-full" onClick={toggleMute}>{isMuted ? <VolumeMute /> : <VolumeUnmute />}</button>
+              <button className='p-5 border border-black rounded-full' onClick={toggleCamera}>{isCameraOff ? <CameraDisable /> : <Camera />}</button>
             </div>
           </div>
         </div>

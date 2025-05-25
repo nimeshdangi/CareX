@@ -37,6 +37,7 @@ const BookAppointmentComponent = () => {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/${id}`);
                 const data = await response.json();
                 console.log(data);
+                console.log("Doctor Image URL:", data.data.image ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${data.data.image}` : "/doctor1.jpeg");
                 setDoctor(data.data);
                 setAverageRating(parseFloat(data.data?.averageRating) || 0);
             } catch (error) {
@@ -213,11 +214,16 @@ const BookAppointmentComponent = () => {
                 <div className="flex-1 flex flex-col gap-10 justify-center my-4">
                     <div className="flex">
                         <Image 
-                            src={doctor.image !== null ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${doctor.image}` : "/doctor1.jpeg"}
+                            src={doctor.image
+                                ? doctor.image.startsWith("https://res.cloudinary.com")
+                                ? doctor.image
+                                : `${process.env.NEXT_PUBLIC_SERVER_URL}/${doctor.image.replace(/^\/+/, '')}`
+                                : "/doctor1.jpeg"}
                             alt="doctor"
                             width={300}
                             height={300}
                             className="rounded-full w-56 h-56 object-cover"
+                            unoptimized
                         />
                         <div className="w-1/2 p-4 flex flex-col justify-center">
                             <h3 className="text-xl font-bold mb-3">Dr. {doctor.name}</h3>
@@ -252,7 +258,12 @@ const BookAppointmentComponent = () => {
                                 doctor.reviews.map(review => (
                                     <div key={review.id} className="flex items-start border-b border-gray-300 py-4">
                                         <img 
-                                            src={review.patient.image || "/doctor.jpg"} // Adjust the placeholder path
+                                            src={review.patient.image ? 
+                                                review.patient.image.startsWith("https://res.cloudinary.com") ?
+                                                review.patient.image :
+                                                `${process.env.NEXT_PUBLIC_SERVER_URL}/${review.patient.image}` : 
+                                                "/doctor.jpg"} // Adjust the placeholder path
+                                            // src={review.patient.image || "/doctor.jpg"} // Adjust the placeholder path
                                             alt={review.patient.name}
                                             className="w-12 h-12 rounded-full mr-4"
                                         />
