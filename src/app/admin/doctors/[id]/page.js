@@ -70,7 +70,11 @@ const DoctorDetails = () => {
                         <p className="text-gray-500">Qualification: {doctor.qualification}</p>
                         Document
                         <Image
-                            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${doctor.documents}`}
+                            src={
+                                doctor.documents.includes("\\") ? 
+                                `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${doctor.documents}`
+                                : doctor.documents
+                            }
                             alt="doctor"
                             width={500}
                             height={500}

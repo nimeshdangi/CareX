@@ -62,7 +62,12 @@ const ProfilePage = () => {
                         </p>
                         <p>
                             <strong>Documents: </strong>
-                            <Image src={`${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${profile.documents}`} width={200} height={200} alt="Profile Picture" className="w-2/3 h-auto mx-auto  " />
+                            <Image
+                                src={!profile.documents.includes("\\") ? `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${profile.documents}` : profile.documents} 
+                                width={200} 
+                                height={200} 
+                                alt="Profile Picture" 
+                                className="w-2/3 h-auto mx-auto  " />
                         </p>
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
                             <Link href={'/doctor/edit-profile'}>Edit Profile</Link>
