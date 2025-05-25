@@ -48,7 +48,8 @@ const ProfilePage = () => {
                                 width={200} 
                                 height={200} 
                                 alt="Profile Picture" 
-                                className="w-full h-full object-cover" />
+                                className="w-full h-full object-cover"
+                                unoptimized/>
                         </div>
                         <div className="text-center space-y-1">
                             <h2 className="text-2xl font-bold">{profile.name}</h2>

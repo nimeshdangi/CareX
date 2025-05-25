@@ -78,6 +78,7 @@ const DoctorDetails = () => {
                             alt="doctor"
                             width={500}
                             height={500}
+                            unoptimized
                             // className="rounded-l-lg w-1/3 object-cover"
                         />
                         <p className="text-gray-500">Rating: 4.5</p>
