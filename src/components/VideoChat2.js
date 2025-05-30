@@ -1,5 +1,5 @@
 "use client"
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import 'webrtc-adapter';
@@ -39,6 +39,7 @@ const App = ({ appointmentId, token, userRole }) => {
   const [symptoms, setSymptoms] = useState('');
   const [diagnosis, setDiagnosis] = useState('');
   const [prescription, setPrescription] = useState('');
+  const router = useRouter();
 
   const myVideo = useRef(null);
   const remoteVideo = useRef(null);
@@ -182,12 +183,16 @@ const App = ({ appointmentId, token, userRole }) => {
 
     getAppointmentDetails();
 
+    window.addEventListener('beforeunload', cleanUp);
+
     // Cleanup on unmount
     return () => {
       socketRef.current.disconnect();
       if (myPeerConnection.current) {
         myPeerConnection.current.close();
       }
+      cleanUp();
+      window.removeEventListener('beforeunload', cleanUp);
     };
   }, []);
 
@@ -224,6 +229,30 @@ const App = ({ appointmentId, token, userRole }) => {
     socketRef.current.emit('updateData', { appointmentId, prescription: e.target.value });
   };
 
+  const cleanUp = () => {
+    // Stop all local tracks
+    if (localStream) {
+      localStream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
+
+    // Close peer connection
+    if (myPeerConnection.current) {
+      myPeerConnection.current.close();
+    }
+
+    // Disconnect socket
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+    }
+  };
+
+  const handleBackClick = () => {
+    cleanUp(); // Stop camera, mic, socket
+    router.push('/appointment'); // Navigate after cleanup
+  };
+
 //   return (
 //     <div>
 //       <h2>Video Call Application</h2>
@@ -237,7 +266,7 @@ const App = ({ appointmentId, token, userRole }) => {
   return (
     <>
       <h2 className='text-center text-3xl my-4'>CareX Video Consultation</h2>
-      <Link href="/appointment" className='flex w-96 justify-center mx-auto py-2 px-5 bg-blue-500 rounded-lg'>Back to Appointments</Link>
+      <button onClick={handleBackClick} className='flex w-96 justify-center mx-auto py-2 px-5 bg-blue-500 rounded-lg'>Back to Appointments</button>
       <div className='flex'>
         <div className='w-1/2'>
           <div className="absolute h-[500px]">
