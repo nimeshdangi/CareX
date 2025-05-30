@@ -71,7 +71,7 @@ const DoctorDetails = () => {
                         Document
                         <Image
                             src={
-                                doctor.documents.includes("\\") ? 
+                                doctor.documents?.includes("\\") ? 
                                 `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/doctors/${doctor.documents}`
                                 : doctor.documents
                             }
